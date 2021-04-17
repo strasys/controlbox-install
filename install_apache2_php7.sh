@@ -16,8 +16,8 @@ wait
 echo "install apache2"
 sudo apt-get install apache2
 wait
-echo "install php5 libapache2-mod-php7"
-sudo apt-get install php7.0 libapache2-mod-php7.0 php7.0-curl php7.0-xml
+echo "install php7.x libapache2-mod-php7"
+sudo apt-get install php php-curl libapache2-mod-php php-xml
 wait
 echo "Disabeling of not used services:"
 echo "disabel cloud9.service"

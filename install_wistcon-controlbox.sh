@@ -16,7 +16,7 @@
 
 sudo apt-get update
 wait
-cd /tmp/wistcon-sensing/
+cd /tmp/wistcon-controlbox/
 wait
 echo "generate folder /var/secure/"
 mkdir /var/secure/
@@ -37,10 +37,10 @@ echo "Change drive /usr/lib/cgi-bin/"
 cd /usr/lib/cgi-bin/
 wait
 echo "Copy WISTCON-SENSING-00A0.dtbo to /lib/firmware/"
-cp WISTCON-SENSING20-00A0.dtbo /lib/firmware/
+cp WISTCON-CONTROL-00A0.dtbo /lib/firmware/
 wait
 echo "Clean WISTCON-SENSING-00A0.dtbo from /usr/lib/cgi-bin/"
-rm WISTCON-SENSING20-00A0.dtbo
+rm WISTCON-CONTROL-00A0.dtbo
 wait
 echo "Install network-manager"
 sudo apt-get install network-manager

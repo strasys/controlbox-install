@@ -27,12 +27,12 @@ chmod 110 firmware
 echo "change user mode of RTChandler020"
 chown root:www-data RTChandler020
 chmod 4110 RTChandler020
-echo "change user mode of PT1000handler_sensingbox"
-chown root:www-data PT1000handler_sensingbox
-chmod 4110 PT1000handler_sensingbox
-echo "change user mode of GPIOhandler_020"
-chown root:www-data GPIOhandler_020
-chmod 4110 GPIOhandler_020
+echo "change user mode of PT1000_controlbox"
+chown root:www-data PT1000_controlbox
+chmod 4110 PT1000_controlbox
+echo "change user mode of GPIOhandler_controlbox"
+chown root:www-data GPIOhandler_controlbox
+chmod 4110 GPIOhandler_controlbox
 echo "change user mode of rweeprom"
 chown root:www-data rweeprom
 chmod 4110 rweeprom
@@ -41,6 +41,9 @@ chmod 110 set_hostname.sh
 echo "change user mode of feuchte"
 chown root:www-data feuchte
 chmod 4110 feuchte
+echo "change user mode of Button_Sensing"
+chown root:www-data Button_Sensing
+chmod 110 Button_Sensing
 
 read -p "Would you like to change the hostname? (y/n)? " ANSW
 if [ "$ANSW" = "y" ]; then
