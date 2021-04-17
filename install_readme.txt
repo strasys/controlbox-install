@@ -47,7 +47,7 @@ enable_uboot_overlays=1
 ###Additional custom capes
 uboot_overlay_addr4=/lib/firmware/BB-I2C2-00A0.dtbo
 uboot_overlay_addr5=/lib/firmware/BB-I2C1-00A0.dtbo
-uboot_overlay_addr6=/lib/firmware/WISTCON-SENSING20-00A0.dtbo
+uboot_overlay_addr6=/lib/firmware/WISTCON-CONTROL-00A0.dtbo
 #uboot_overlay_addr7=/lib/firmware/<file7>.dtbo
 ###
 ###Custom Cape

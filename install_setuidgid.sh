@@ -26,7 +26,7 @@ echo "change user mode of firmware"
 chmod 110 firmware
 echo "change user mode of RTChandler020"
 chown root:www-data RTChandler020
-chmod 4110 RTChandler020
+chmod 4110 RTChandler_020
 echo "change user mode of PT1000_controlbox"
 chown root:www-data PT1000_controlbox
 chmod 4110 PT1000_controlbox
