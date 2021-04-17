@@ -16,7 +16,7 @@
 
 sudo apt-get update
 wait
-cd /tmp/wistcon-controlbox/
+cd /tmp/wistcon-sensing/
 wait
 echo "generate folder /var/secure/"
 mkdir /var/secure/
