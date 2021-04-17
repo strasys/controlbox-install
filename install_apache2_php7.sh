@@ -13,6 +13,9 @@ wait
 echo "Debian Version"
 sudo cat /etc/debian_version
 wait
+echo "Remove nginx"
+sudo apt-get remove nginx nginx-common
+wait
 echo "install apache2"
 sudo apt-get install apache2
 wait
