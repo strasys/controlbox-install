@@ -9,22 +9,36 @@ include_once ('/var/www/privateplc_php.ini.php');
 session_start();
 //include_once ('/var/www/authentification.inc.php');
 include_once ('/var/www/hw_classes/PT1000.inc.php');
+include_once ('/var/www/hw_classes/GPIO.inc.php');
 include_once ('/var/www/hw_classes/HUMIDITY.inc.php');
 
+/* values do be displayed for pool with solar heater
+ * PT1000 1 - 4: Becken, Luft, Rücklauf, Solar
+ * Digi OUT: 1 - 5: Pumpe, Mischer, Frischwasser, Poolbeleuchtung, sonstiges
+ * Digi In: 1 - 2: Schwimmer, Mischer heizen
+ * Status: Automatikbetrieb - Gesamtanlage 
+ * Status: Automatikbetrieb: Filtern, nachspeisen, Solar
+ */
 
-	//$PT1000ex1 = new PT1000;
-	$humidityex1 = new HUMIDITY;
+	$PT1000ex1 = new PT1000;
+    
+	$PoolTemp = $PT1000ex1->getPT1000round05(0,1);
+	$AirTemp = $PT1000ex1->getPT1000round05(1,1);
+	$BackwaterTemp = $PT1000ex1->getPT1000round05(2,1);
+	$SolarTemp = $PT1000ex1->getPT1000round05(3,1);
+	
+	$GPIOhandler = new GPIO;
+	$GPIOin = $GPIOhandler->getIn();
+	$GPIOout = $GPIOhandler->getOut();
 
-	$humidity_val_ex1 = $humidityex1->getHUMIDITY(1);
-	$humidity_temp_val_ex1 = $humidityex1->getTemperature_C(1);
 
-	//$TEMPERATURE_val1 = $PT1000ex1->getPT1000(0,1);
-	//$TEMPERATURE_val2= $PT1000ex1->getPT1000(1,1);
-
-	$arr = array ('humidity1' => $humidity_val_ex1,
-		'humidity_temp1' => $humidity_temp_val_ex1,
-		//'temp1' => $TEMPERATURE_val1,
-		//'temp2' => $TEMPERATURE_val2
+	$arr = array (
+	    'PoolTemp' => $PoolTemp,
+		'AirTemp' => $AirTemp,
+	    'BackwaterTemp' => $BackwaterTemp,
+	    'SolarTemp' => $SolarTemp,
+	    'GPIOin' => $GPIOin,
+	    'GPIOout' => $GPIOout
 	);
 
 

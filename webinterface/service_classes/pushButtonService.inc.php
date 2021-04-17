@@ -1,19 +1,117 @@
 <?php
 /*
-	class EEPROM
+	class pushButtonSensingService
 	
 	Johannes Strasser
-	19.07.2017
+	27.03.2021
 	www.wistcon.at
 */
+
 class pushButtonSensingService
 {
+    //set GPIOIN for Push Button Sensing
+    function SetSensing($GPIOnum, $Status){
+        $statusFileDir = "/var/www/tmp/pushButtonSensingDigiInStatus.txt";
+        if (!file_exists($statusFileDir))
+        {
+            $statusFile = fopen($statusFileDir, "w");
+           // exec("chown www-data:root /var/www/tmp/pushButtonSensingDigiInStatus.txt");
+           // exec("chmod g+w /var/www/tmp/pushButtonSensingDigiInStatus.txt");
+            $xml=simplexml_load_file("/var/www/VDF.xml") or die("Error: Cannot create object");
+            $numGPIOIN = $xml->GPIOIN->count();
+           
+            for($i=0;$i<$numGPIOIN;$i++){
+                fwrite($statusFile, "IN:".$i.":N".PHP_EOL);
+            }
+            
+            fclose($statusFile);
+        }
+        
+        $statusFile = fopen($statusFileDir, "r+");
+
+        $File_arr = array();
+        $File_arr = array_map('trim', file($statusFileDir, FILE_IGNORE_NEW_LINES));
+        
+        $File_arr[$GPIOnum] = "IN:".$GPIOnum.":".$Status;
+        $FilearrSize = count($File_arr);
+       
+        for($i=0;$i<$FilearrSize;$i++){
+            fwrite($statusFile, $File_arr[$i].PHP_EOL);
+        }
+ /*   
+        rewind($statusFile);
+        while(!feof($statusFile)){
+            echo fgets($statusFile)."<br>";
+        }
+ */     
+        fclose($statusFile);
+
+    }	
+    
+    function GetSensing(){
+        
+        $statusFileDir = "/var/www/tmp/pushButtonSensingDigiInStatus.txt";
+        if (!file_exists($statusFileDir))
+        {
+            $statusFile = fopen($statusFileDir, "w");
+            //exec("chown www-data:root /var/www/tmp/pushButtonSensingDigiInStatus.txt");
+            $xml=simplexml_load_file("/var/www/VDF.xml") or die("Error: Cannot create object");
+            $numGPIOIN = $xml->GPIOIN->count();
+            
+            for($i=0;$i<$numGPIOIN;$i++){
+                fwrite($statusFile, "IN:".$i.":N".PHP_EOL);
+            }
+            
+            fclose($statusFile);
+        }
+        
+        $statusFile = fopen($statusFileDir, "r");
+        
+        $File_arr = array();
+        $File_arr = array_map('trim', file($statusFileDir, FILE_IGNORE_NEW_LINES));
+        
+            $onlyStatusFile_arr = array();
+        foreach ($File_arr as $value){
+            $temp_arr = explode(":",$value);
+            $onlyStatusFile_arr[] = $temp_arr[2];
+        }
+        
+        fclose($statusFile);
+        
+        return $onlyStatusFile_arr;
+    }
+    
+    function getrunstopStatus(){
+        $statusFileDir = "/var/www/tmp/pushButtonSensingRunStop.txt";
+        if (!file_exists($statusFileDir))
+        {
+            $statusFile = fopen($statusFileDir, "w");
+            fwrite($statusFile, "stop");
+            fclose($statusFile);
+            $xml=simplexml_load_file("/var/www/VDF.xml") or die("Error: Cannot create object");
+            $xml->OperationModeDevice[0]->pushButtonSensing = $statusWord;
+            $xml->asXML("/var/www/VDF.xml");
+        }
+        
+            $statusFile = fopen($statusFileDir, "r");
+            $statusWord = trim(fgets($statusFile, 5));
+            fclose($statusFile);
+        
+        if($statusWord == 'run'){
+            $boolStatus = true;
+        } else if ($statusWord == 'stop'){
+            $boolStatus = false;
+        }
+        
+        return $boolStatus;         
+    }
+    
 	//get Inputs set for push button sensing and status
 	//1 = set for sensing
 	//0 = not set for sensing
 	function getInputSetforSensing()
 	{
-	$statusFile = fopen("/usr/lib/cgi-bin/pushButtonSensingDigiInStatus.txt","r");
+	$statusFile = fopen("/var/www/tmp/pushButtonSensingDigiInStatus.txt","r");
 	if ($statusFile == false)
 	{
 		$errorMsg = "Could not read \"pushButtonSensingDigiInStatus.txt\"! 
@@ -49,7 +147,7 @@ class pushButtonSensingService
 	//[N/0/1] = N - Not set for Sensing, 0 = status (ON), 1 = status (OFF)
 	function getInputToggleStatus()
 	{
-		$statusFile = fopen("/usr/lib/cgi-bin/pushButtonSensingDigiInStatus.txt","r");
+		$statusFile = fopen("/var/www/tmp/pushButtonSensingDigiInStatus.txt","r");
 		if ($statusFile == false)
 		{
 			$errorMsg = "Could not read \"pushButtonSensingDigiInStatus.txt\"! 
